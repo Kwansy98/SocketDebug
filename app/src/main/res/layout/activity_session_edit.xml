@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/colorGreyWhite">
+
+    <!-- 工具栏 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_session"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="编辑会话"
+        app:navigationIcon="@drawable/ic_close_white_24dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- session 类型 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- CS模式选择 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="模式:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:singleLine="true"
+                            />
+                        <RadioGroup
+                            android:id="@+id/radiogroup_cs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rbtn_client"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="客户端"
+                                android:checked="true"/>
+                            <RadioButton
+                                android:id="@+id/rbtn_server"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="服务器"/>
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+                    <!-- 协议 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="协议:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:singleLine="true"
+                            />
+                        <RadioGroup
+                            android:id="@+id/radiogroup_protocol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            >
+                            <RadioButton
+                                android:id="@+id/rbtn_tcp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="TCP"
+                                android:checked="true"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_udp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="UDP"
+                                />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 客户端选项 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_client"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- server serverHost -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="服务器地址:"
+                            android:textSize="15sp" />
+                        <EditText
+                            android:id="@+id/edit_server_host"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:hint="IP/域名"
+                            android:textSize="15sp"
+                            android:singleLine="true"
+                            />
+
+
+                    </LinearLayout>
+
+                    <!-- source serverHost -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="源地址:"
+                            android:textSize="15sp" />
+                        <EditText
+                            android:id="@+id/edit_source_host"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:hint="默认"
+                            android:textSize="15sp"
+                            android:singleLine="true"
+                            />
+                    </LinearLayout>
+
+                    <!-- server & source serverPort -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="服务器端口:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <EditText
+                            android:id="@+id/edit_server_port"
+                            android:layout_width="75sp"
+                            android:layout_height="wrap_content"
+                            android:hint="1-65535"
+                            android:textSize="15sp"
+                            android:maxLength="5"
+                            android:layout_gravity="center"
+                            android:inputType="number"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="源端口:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            />
+                        <EditText
+                            android:id="@+id/edit_source_port"
+                            android:layout_width="75sp"
+                            android:layout_height="wrap_content"
+                            android:hint="可选"
+                            android:textSize="15sp"
+                            android:maxLength="5"
+                            android:layout_gravity="center"
+                            android:inputType="number"
+                            />
+
+
+                    </LinearLayout>
+
+                    <!-- connect timeout -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="连接超时(ms):"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:singleLine="true"
+                            />
+                        <EditText
+                            android:id="@+id/edit_connect_timeout"
+                            android:layout_width="100sp"
+                            android:layout_height="wrap_content"
+                            android:hint="默认"
+                            android:textSize="15sp"
+                            android:singleLine="true"
+                            android:layout_gravity="center"
+                            android:inputType="number"
+                            />
+                        <CheckBox
+                            android:id="@+id/checkbox_auto_connect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="自动连接"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 服务端选项 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- local address -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="监听地址:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:singleLine="true"
+                            />
+                        <EditText
+                            android:id="@+id/edit_listen_host"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:hint="默认"
+                            android:textSize="15sp"
+                            android:singleLine="true"
+                            />
+
+                    </LinearLayout>
+
+                    <!-- listen serverPort -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="监听端口:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <EditText
+                            android:id="@+id/edit_listen_port"
+                            android:layout_width="75sp"
+                            android:layout_height="wrap_content"
+                            android:hint="1-65535"
+                            android:textSize="15sp"
+                            android:maxLength="5"
+                            android:layout_gravity="center"
+                            android:inputType="number"
+                            />
+                        <CheckBox
+                            android:id="@+id/checkbox_auto_listen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="自动监听"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CS通用选项 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+
+                    <!-- io mode -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="读写模式:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <RadioGroup
+                            android:id="@+id/radiogroup_io"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            >
+                            <RadioButton
+                                android:id="@+id/rbtn_rw"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="读写"
+                                android:checked="true"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_ro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="只读"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_wo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="只写"
+                                />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <!-- EOL -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="换行符:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <RadioGroup
+                            android:id="@+id/radiogroup_eol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            >
+                            <RadioButton
+                                android:id="@+id/rbtn_lf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="LF"
+                                android:checked="true"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_crlf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="CRLF"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_cr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="CR"
+                                />
+                            <RadioButton
+                                android:id="@+id/rbtn_no_eol"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="不追加"
+                                android:checked="true"
+                                />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <!-- 发送编码 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="发送文本编码:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_encode_send"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="UTF-8:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                            />
+                    </LinearLayout>
+
+                    <!-- 接收编码 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="接收文本编码:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_encode_recv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="UTF-8:"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

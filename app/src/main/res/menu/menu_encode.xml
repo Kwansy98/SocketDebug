@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_encode_utf8"
+        android:title="UTF-8"
+        />
+    <item
+        android:id="@+id/item_encode_gbk"
+        android:title="GBK"
+        />
+    <item
+        android:id="@+id/item_encode_gb2312"
+        android:title="GB2312"
+        />
+    <item
+        android:id="@+id/item_encode_ascii"
+        android:title="US-ASCII"
+        />
+    <item
+        android:id="@+id/item_encode_iso8859"
+        android:title="ISO-8859-1"
+        />
+    <item
+        android:id="@+id/item_encode_utf16be"
+        android:title="UTF-16BE"
+        />
+    <item
+        android:id="@+id/item_encode_utf16le"
+        android:title="UTF-16LE"
+        />
+    <item
+        android:id="@+id/item_encode_utf16"
+        android:title="UTF-16"
+        />
+</menu>

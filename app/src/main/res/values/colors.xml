@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#006600</color>
+    <color name="colorPrimaryDark">#005000</color>
+    <color name="colorAccent">#999999</color>
+    <color name="colorEdit">#F5F5DC</color>
+    <color name="colorWhite">#fafafa</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorIconBg">@color/colorWhite</color>
+    <color name="colorGreen">#3BA23B</color>
+    <color name="colorGreyWhite">#E6E6E6</color>
+    <color name="colorMsgTextGet">#ffffff</color>
+    <color name="colorMsgFileGet">#ffc577</color>
+    <color name="colorMsgTextSend">#B8F1C4</color>
+    <color name="colorMsgFileSend">#ffc577</color>
+
+    <color name="colorMsgTextSystem">#777777</color>
+
+
+</resources>

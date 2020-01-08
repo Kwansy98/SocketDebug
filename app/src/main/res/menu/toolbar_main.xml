@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_add"
+        android:icon="@drawable/ic_add_circle_outline_white_24dp"
+        android:title="添加"
+        app:showAsAction="ifRoom"
+        />
+    <!--<item-->
+        <!--android:id="@+id/item_export"-->
+        <!--android:icon="@drawable/ic_content_paste_white_24dp"-->
+        <!--android:title="导出到粘贴板"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--/>-->
+    <item
+        android:id="@+id/item_import_clipboard"
+        android:title="从粘贴板导入"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/item_get_local_ip"
+        android:title="获取本机IP"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/item_dev_log"
+        android:title="开发日志"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/item_about"
+        android:title="关于"
+        app:showAsAction="never"
+        />
+</menu>
