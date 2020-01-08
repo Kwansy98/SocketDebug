@@ -2,6 +2,7 @@ package com.kw.ssg10.code.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -126,7 +127,6 @@ public class SessionActivity extends AppCompatActivity {
         if (config.getCSMode() == 0 && config.getProtocol() == 0) session = new TcpClientSession(handler, config, tasks);
         else if (config.getCSMode() == 0 && config.getProtocol() == 1) session = new UdpClientSession(handler, config, tasks);
         else if (config.getCSMode() == 1 && config.getProtocol() == 0) session = new TcpServerSession(handler, config, tasks);
-//        else if (config.getCSMode() == 1 && config.getProtocol() == 1) session = new UdpServerSession();
 
 
         editSend = findViewById(R.id.edit_send);

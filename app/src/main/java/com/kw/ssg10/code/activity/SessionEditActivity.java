@@ -110,6 +110,7 @@ public class SessionEditActivity extends AppCompatActivity {
         rbtnClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rbtnUDP.setVisibility(View.VISIBLE); // 允许选择UDP服务器
                 cardViewServer.setVisibility(View.GONE);
                 cardViewClient.setVisibility(View.VISIBLE);
                 config.setCSMode(0);
@@ -119,6 +120,8 @@ public class SessionEditActivity extends AppCompatActivity {
         rbtnServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rbtnUDP.setVisibility(View.GONE); // 禁止选择UDP服务器
+                rbtnTCP.setChecked(true); // 自动选上TCP协议
                 cardViewClient.setVisibility(View.GONE);
                 cardViewServer.setVisibility(View.VISIBLE);
                 config.setCSMode(1);
@@ -491,6 +494,8 @@ public class SessionEditActivity extends AppCompatActivity {
                 cardViewServer.setVisibility(View.GONE);
                 break;
             case 1:
+                rbtnUDP.setVisibility(View.GONE); // 禁止选择UDP服务器
+                rbtnTCP.setChecked(true); // 自动选上TCP协议
                 cardViewServer.setVisibility(View.VISIBLE);
                 cardViewClient.setVisibility(View.GONE);
                 radioGroupCS.check(R.id.rbtn_server);
