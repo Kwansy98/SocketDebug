@@ -7,7 +7,7 @@
 
 .<img src="https://github.com/Kwansy98/SocketDebug/blob/master/pic/2.jpg" width="540" />
 
-.<img src="https://github.com/Kwansy98/SocketDebug/blob/master/pic/2.jpg" width="540" />
+.<img src="https://github.com/Kwansy98/SocketDebug/blob/master/pic/3.jpg" width="540" />
 
-.<img src="https://github.com/Kwansy98/SocketDebug/blob/master/pic/2.jpg" width="540" />
+.<img src="https://github.com/Kwansy98/SocketDebug/blob/master/pic/4.jpg" width="540" />
 
