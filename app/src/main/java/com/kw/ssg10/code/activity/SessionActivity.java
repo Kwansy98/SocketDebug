@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kw.ssg10.R;
 import com.kw.ssg10.code.session.TcpServerSession;
+import com.kw.ssg10.code.session.UdpClientSession;
 import com.kw.ssg10.code.utils.SessionConfig;
 import com.kw.ssg10.code.utils.SessionManager;
 import com.kw.ssg10.code.adapter.ItemAdapter;
@@ -123,7 +124,7 @@ public class SessionActivity extends AppCompatActivity {
 
 
         if (config.getCSMode() == 0 && config.getProtocol() == 0) session = new TcpClientSession(handler, config, tasks);
-//        else if (config.getCSMode() == 0 && config.getProtocol() == 1) session = new UdpClientSession();
+        else if (config.getCSMode() == 0 && config.getProtocol() == 1) session = new UdpClientSession(handler, config, tasks);
         else if (config.getCSMode() == 1 && config.getProtocol() == 0) session = new TcpServerSession(handler, config, tasks);
 //        else if (config.getCSMode() == 1 && config.getProtocol() == 1) session = new UdpServerSession();
 

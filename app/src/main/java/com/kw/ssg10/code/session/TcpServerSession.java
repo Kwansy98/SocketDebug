@@ -208,7 +208,8 @@ public class TcpServerSession implements Session {
             int read;
             while ((read = task.read(buffer)) != -1) {
                 try {
-                    out.write(buffer);
+                    //out.write(buffer);
+                    out.write(buffer, 0, read); // 发送从文件中读取到的read个字节
                     out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();

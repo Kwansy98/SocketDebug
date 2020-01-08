@@ -229,10 +229,11 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
         dialog.setTitle("准备实现的功能");
         String []msgs = new String[100];
-        msgs[0] = "长按配置多选\n";
+        msgs[0] = "长按批量删除配置\n";
         msgs[1] = "单击文件item浏览完整内容\n";
         msgs[2] = "长按文本复制\n";
         msgs[3] = "发送文件模板\n";
+        msgs[4] = "批量显示协议和CS类型\n";
 
         String msg = "";
         for (int i = 0; i < 100; i++) if (msgs[i] != null) msg += (i+1 + "." + msgs[i]);

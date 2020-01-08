@@ -1,30 +1,26 @@
 package com.kw.ssg10.code.session;
 
-
 import android.os.Message;
 
 import com.kw.ssg10.code.activity.SessionActivity;
-import com.kw.ssg10.code.utils.SessionConfig;
-import com.kw.ssg10.code.activity.SessionActivity.UpdateUIHandler;
 import com.kw.ssg10.code.session.task.LogTask;
 import com.kw.ssg10.code.session.task.ReceiveStringTask;
 import com.kw.ssg10.code.session.task.SendStringTask;
 import com.kw.ssg10.code.session.task.SessionTask;
 import com.kw.ssg10.code.session.task.UploadFileTask;
+import com.kw.ssg10.code.utils.SessionConfig;
 
 import java.io.IOException;
-
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// NIO实现的客户端，没发现什么BUG，2020年1月7日23:30:31
-
-public class TcpClientSession implements Session {
+public class UdpClientSession implements Session {
     private static final String TAG = "kwdebug";
     private static final int BUF_SIZE = 8192;
 
@@ -57,9 +53,11 @@ public class TcpClientSession implements Session {
         }
     }
     private SendThread sendThread;
-    private SocketChannel socketChannel;
+    private DatagramSocket clientSocket;
+    InetSocketAddress remoteAddress;
+    InetSocketAddress localAddress;
 
-    public TcpClientSession(SessionActivity.UpdateUIHandler handler, SessionConfig config, ArrayList<SessionTask> tasks) {
+    public UdpClientSession(SessionActivity.UpdateUIHandler handler, SessionConfig config, ArrayList<SessionTask> tasks) {
         this.handler = handler;
         this.config = config;
         this.tasks = tasks;
@@ -77,15 +75,12 @@ public class TcpClientSession implements Session {
             @Override
             public void run() {
                 try {
-                    InetSocketAddress remoteAddress = new InetSocketAddress(
+                    remoteAddress = new InetSocketAddress(
                             InetAddress.getByName(config.getServerHost()), config.getServerPort());
-                    InetSocketAddress localAddress = new InetSocketAddress(
+                    localAddress = new InetSocketAddress(
                             InetAddress.getByName(config.getListenHost()), config.getListenPort());
-                    socketChannel = SocketChannel.open();
-                    socketChannel.socket().setReuseAddress(true);
-                    socketChannel.socket().bind(localAddress);
-                    socketChannel.socket().connect(remoteAddress, config.getConnectTimeout());
-                    log(socketChannel.socket().getRemoteSocketAddress().toString());
+                    clientSocket = new DatagramSocket(); // 创建一个UDP套接字
+                    log(remoteAddress.toString());
                     onEstablish();
                     if (sendThread != null && !sendTasks.isEmpty()) {
                         synchronized (sendThread) {
@@ -93,25 +88,24 @@ public class TcpClientSession implements Session {
                         }
                     }
                     // 循环接收数据
-                    ByteBuffer bufRecv = ByteBuffer.allocate(BUF_SIZE);
-                    bufRecv.clear();
-                    int read = 0;
+                    byte[] bufRecv = new byte[BUF_SIZE];
+                    DatagramPacket packet = new DatagramPacket(bufRecv, bufRecv.length, remoteAddress);
                     try {
-                        while ((read = socketChannel.read(bufRecv)) > 0) {
-                            bufRecv.flip();
-                            byte[] byteArr = new byte[bufRecv.remaining()];
-                            bufRecv.get(byteArr, 0, bufRecv.remaining()); // 拷贝到数组
-                            postTask(new ReceiveStringTask(byteArr, config.getEncodeRecv()));
-                            bufRecv.clear();
+                        while (isEstablish) {
+                            clientSocket.receive(packet);
+                            byte[] data = new byte[packet.getLength()];
+                            System.arraycopy(packet.getData(), packet.getOffset(), data, 0, data.length);
+
+                            //postTask(new ReceiveStringTask(packet.getData(), config.getEncodeRecv()));
+                            postTask(new ReceiveStringTask(data, config.getEncodeRecv()));
+
                             updateUI();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
-                        if (read == -1) {
-                            log("断开连接");
-                            close();
-                        }
+                        log("断开连接");
+                        close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -126,10 +120,9 @@ public class TcpClientSession implements Session {
     @Override
     public void close() {
         isEstablish = false;
-        try {
-            if (socketChannel != null) socketChannel.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (clientSocket != null) {
+            clientSocket.close();
+            clientSocket.disconnect();
         }
 
         try {
@@ -178,12 +171,14 @@ public class TcpClientSession implements Session {
         return isEstablish;
     }
 
+
+
+
     // 发送字符串
     private void send(SendStringTask task) {
         byte[] buffer = task.getBuffer();
-        ByteBuffer sendBuff = ByteBuffer.wrap(buffer);
         try {
-            socketChannel.write(sendBuff);
+            clientSocket.send(new DatagramPacket(buffer, buffer.length, remoteAddress));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -192,18 +187,16 @@ public class TcpClientSession implements Session {
 
     // 发送文件
     private void send(UploadFileTask task) {
-        ByteBuffer buffer = ByteBuffer.allocate(BUF_SIZE);
+        byte[] buffer = new byte[BUF_SIZE];
         try {
             int read;
             while ((read = task.read(buffer)) != -1) {
-                buffer.flip();
                 try {
-                    socketChannel.write(buffer); // 这里应该有BUG（应该发送read个字节），到时候改用传统SOCKET重写
-
+                    //clientSocket.send(new DatagramPacket(buffer, buffer.length, remoteAddress));
+                    clientSocket.send(new DatagramPacket(buffer, read, remoteAddress));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                buffer.clear();
                 updateUI();
             }
         } catch (IOException e) {
@@ -222,7 +215,7 @@ public class TcpClientSession implements Session {
     // 只更新UI，不加新item（如果在发送大文件时频繁调用可能会影响效率）
     private void updateUI() {
         Message msg = new Message();
-        msg.what = UpdateUIHandler.MSG_UPDATE_OUTPUT;
+        msg.what = SessionActivity.UpdateUIHandler.MSG_UPDATE_OUTPUT;
         handler.sendMessage(msg);
     }
 
@@ -236,14 +229,15 @@ public class TcpClientSession implements Session {
     // 通知活动会话建立
     private void onEstablish() {
         Message msg = new Message();
-        msg.what = UpdateUIHandler.MSG_ONESTABLISH;
+        msg.what = SessionActivity.UpdateUIHandler.MSG_ONESTABLISH;
         handler.sendMessage(msg);
     }
 
     // 通知活动会话关闭
     private void onClose() {
         Message msg = new Message();
-        msg.what = UpdateUIHandler.MSG_ONCLOSE;
+        msg.what = SessionActivity.UpdateUIHandler.MSG_ONCLOSE;
         handler.sendMessage(msg);
     }
+
 }
